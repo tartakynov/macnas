@@ -44,7 +44,7 @@ Configuration is stored at `~/Library/Application Support/MacNAS/config.json`.
 ## How It Works
 
 - Mounts NFS shares using NFSv3 over TCP with `nobrowse`/`nodev`/`nosuid`
-- Polls mount health every 15 seconds (configurable): network check, server ping, per-mount `stat`
+- Polls mount health every 15 seconds (configurable): check if mounts are still available
 - Automatically remounts missing shares; force-unmounts and remounts stale or unreachable ones
 - Triggers immediate health checks after sleep/wake and network changes
 - Blocks Spotlight indexing on each mount to prevent mount thrashing
