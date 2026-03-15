@@ -60,13 +60,27 @@ final class HealthChecker {
 
     /// Check if a mount is accessible by running stat on it with a timeout.
     /// We use a subprocess because statfs() can hang indefinitely on unresponsive NFS mounts.
+    /// Retries once on timeout to avoid false positives from transient NFS delays.
     private func checkStat(_ mountPoint: String) -> StatResult {
-        let result = ProcessRunner.run("/usr/bin/stat", args: ["-f", "%d", mountPoint], timeout: 5)
+        let result = runStat(mountPoint)
 
         if result.timedOut {
-            return .timeout
+            logger.info("stat timed out on \(mountPoint, privacy: .public), retrying once")
+            let retry = runStat(mountPoint)
+            if retry.timedOut {
+                return .timeout
+            }
+            return parseStatResult(retry)
         }
 
+        return parseStatResult(result)
+    }
+
+    private func runStat(_ mountPoint: String) -> ProcessResult {
+        ProcessRunner.run("/usr/bin/stat", args: ["-f", "%d", mountPoint], timeout: 5)
+    }
+
+    private func parseStatResult(_ result: ProcessResult) -> StatResult {
         if result.exitCode == 0 {
             return .ok
         }
