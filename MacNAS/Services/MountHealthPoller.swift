@@ -77,18 +77,6 @@ final class MountHealthPoller {
             return
         }
 
-        // Check server reachability
-        let serverUp = await helperClient.pingServer(ip: appState.config.serverIP)
-        appState.serverReachable = serverUp
-
-        if !serverUp {
-            // Server unreachable — mark all mounts, but don't try recovery
-            for mount in appState.config.mounts {
-                appState.mountStatuses[mount.id] = .unreachable
-            }
-            return
-        }
-
         // Get health reports
         let reports = await helperClient.checkHealth(mounts: appState.config.mounts)
         appState.updateFromHealthReports(reports)
@@ -101,7 +89,7 @@ final class MountHealthPoller {
                     await recoverMount(def, forceUnmount: false)
                 }
 
-            case .stale, .unreachable:
+            case .stale:
                 if let def = appState.config.mounts.first(where: { $0.mountName == report.mountName }) {
                     await recoverMount(def, forceUnmount: true)
                 }

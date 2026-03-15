@@ -66,17 +66,6 @@ final class HelperClient {
         }
     }
 
-    /// Ping the NFS server.
-    func pingServer(ip: String) async -> Bool {
-        guard let proxy = getProxy() else { return false }
-
-        return await withCheckedContinuation { continuation in
-            proxy.pingServer(ip: ip) { reachable in
-                continuation.resume(returning: reachable)
-            }
-        }
-    }
-
     /// Apply full configuration — mount everything that isn't mounted.
     func applyConfig(mounts: [MountDefinition]) async -> (Bool, String?) {
         guard let proxy = getProxy(),

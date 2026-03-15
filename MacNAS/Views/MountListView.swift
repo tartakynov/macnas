@@ -48,18 +48,12 @@ struct MountListView: View {
                 Spacer()
                 Image(systemName: "wifi.slash")
                     .foregroundStyle(.red)
-            } else if appState.serverReachable {
+            } else {
                 Text(appState.config.serverIP.isEmpty ? "No server configured" : appState.config.serverIP)
                     .foregroundStyle(.primary)
                 Spacer()
                 Image(systemName: "server.rack")
-                    .foregroundStyle(.green)
-            } else {
-                Text(appState.config.serverIP.isEmpty ? "No server configured" : "\(appState.config.serverIP) — unreachable")
-                    .foregroundStyle(.red)
-                Spacer()
-                Image(systemName: "server.rack")
-                    .foregroundStyle(.red)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.horizontal, 12)

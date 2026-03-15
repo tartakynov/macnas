@@ -7,16 +7,6 @@ private let logger = Logger(subsystem: "com.macnas.helper", category: "health")
 /// Checks mount health: server reachability, mount presence, staleness.
 final class HealthChecker {
 
-    /// Ping server via ICMP.
-    func pingNFS(ip: String) -> Bool {
-        let result = ProcessRunner.run(
-            "/sbin/ping",
-            args: ["-c", "1", "-W", "3", ip],
-            timeout: 5
-        )
-        return result.exitCode == 0
-    }
-
     /// Full health check for a single mount point.
     func check(mountPoint: String, mountName: String, serverIP: String) -> MountHealthReport {
         // 1. Is it in the mount table?
@@ -37,8 +27,8 @@ final class HealthChecker {
             logger.error("\(mountName, privacy: .public): stat reports stale NFS handle (mountPoint=\(mountPoint, privacy: .public))")
             return .stale(name: mountName, point: mountPoint)
         case .timeout:
-            logger.error("\(mountName, privacy: .public): stat timed out — reporting unreachable (mountPoint=\(mountPoint, privacy: .public))")
-            return .unreachable(name: mountName, point: mountPoint)
+            logger.error("\(mountName, privacy: .public): stat timed out (mountPoint=\(mountPoint, privacy: .public))")
+            return .stale(name: mountName, point: mountPoint)
         case .error(let msg):
             logger.error("\(mountName, privacy: .public): stat failed — \(msg, privacy: .public) (mountPoint=\(mountPoint, privacy: .public))")
             return .error(name: mountName, point: mountPoint, message: msg)

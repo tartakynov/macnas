@@ -74,11 +74,6 @@ final class HelperService: NSObject, HelperProtocol {
         reply(data)
     }
 
-    func pingServer(ip: String, reply: @escaping (Bool) -> Void) {
-        let reachable = healthChecker.pingNFS(ip: ip)
-        reply(reachable)
-    }
-
     func applyConfig(mountsData: Data, reply: @escaping (Bool, String?) -> Void) {
         guard let config = loadConfig(),
               let mounts = try? decoder.decode([MountDefinition].self, from: mountsData) else {

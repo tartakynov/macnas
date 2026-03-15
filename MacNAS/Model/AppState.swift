@@ -7,7 +7,6 @@ import Shared
 final class AppState: ObservableObject {
     @Published var config: MacNASConfig
     @Published var mountStatuses: [UUID: MountStatus] = [:]
-    @Published var serverReachable: Bool = false
     @Published var hasNetwork: Bool = true
     @Published var lastCheckTime: Date?
 

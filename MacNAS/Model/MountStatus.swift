@@ -6,7 +6,6 @@ enum MountStatus: Equatable {
     case unknown
     case mounted
     case stale
-    case unreachable
     case missing
     case noNetwork
     case error(String)
@@ -16,7 +15,6 @@ enum MountStatus: Equatable {
         case .unknown: return "Unknown"
         case .mounted: return "Mounted"
         case .stale: return "Stale"
-        case .unreachable: return "Unreachable"
         case .missing: return "Not Mounted"
         case .noNetwork: return "No Network"
         case .error: return "Error"
@@ -28,7 +26,7 @@ enum MountStatus: Equatable {
         case .mounted: return .green
         case .unknown: return .gray
         case .missing: return .yellow
-        case .stale, .unreachable, .noNetwork, .error: return .red
+        case .stale, .noNetwork, .error: return .red
         }
     }
 
@@ -37,14 +35,14 @@ enum MountStatus: Equatable {
         case .mounted: return "externaldrive.fill.badge.checkmark"
         case .unknown: return "externaldrive.fill.badge.questionmark"
         case .missing: return "externaldrive.badge.minus"
-        case .stale, .unreachable, .error: return "externaldrive.fill.badge.xmark"
+        case .stale, .error: return "externaldrive.fill.badge.xmark"
         case .noNetwork: return "externaldrive.fill.badge.wifi.slash"
         }
     }
 
     var isFailed: Bool {
         switch self {
-        case .stale, .unreachable, .noNetwork, .error: return true
+        case .stale, .noNetwork, .error: return true
         default: return false
         }
     }
@@ -53,7 +51,6 @@ enum MountStatus: Equatable {
         switch health {
         case .mounted: self = .mounted
         case .stale: self = .stale
-        case .unreachable: self = .unreachable
         case .missing: self = .missing
         case .noNetwork: self = .noNetwork
         case .error: self = .error(message ?? "unknown error")

@@ -87,10 +87,6 @@ extension MountHealthReport {
         MountHealthReport(mountName: name, mountPoint: point, status: .stale, message: "Stale NFS file handle")
     }
 
-    public static func unreachable(name: String, point: String) -> MountHealthReport {
-        MountHealthReport(mountName: name, mountPoint: point, status: .unreachable, message: "Mount unresponsive (timed out)")
-    }
-
     public static func error(name: String, point: String, message: String?) -> MountHealthReport {
         MountHealthReport(mountName: name, mountPoint: point, status: .error, message: message)
     }
@@ -100,7 +96,6 @@ extension MountHealthReport {
 public enum MountHealthStatus: String, Codable {
     case mounted
     case stale
-    case unreachable
     case missing
     case noNetwork
     case error
