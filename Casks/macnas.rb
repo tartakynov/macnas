@@ -11,5 +11,8 @@ cask "macnas" do
 
   app "MacNAS.app"
 
+  uninstall launchctl: "com.macnas.helper",
+            delete:    "/usr/local/bin/com.macnas.helper"
+
   zap trash: "~/Library/Application Support/MacNAS"
 end
