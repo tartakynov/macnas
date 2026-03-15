@@ -19,6 +19,7 @@ NFSv3 only. Requires macOS 14.0+ (Sonoma).
 ```sh
 brew tap tartakynov/macnas https://github.com/tartakynov/macnas.git
 brew install --cask macnas
+xattr -cr /Applications/MacNAS.app
 ```
 
 Or build from source:
