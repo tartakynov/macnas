@@ -4,7 +4,14 @@ A macOS menu bar app that manages NFS mounts to a NAS, with automatic health mon
 
 Requires macOS 14.0+ (Sonoma). No external dependencies.
 
-## Building
+## Installing via Homebrew
+
+```sh
+brew tap tartakynov/macnas https://github.com/tartakynov/macnas.git
+brew install --cask macnas
+```
+
+## Building from Source
 
 ```sh
 make
@@ -14,17 +21,11 @@ This builds both:
 - **MacNAS.app** — menu bar app (`.build/release/MacNAS.app`)
 - **com.macnas.helper** — LaunchDaemon that runs as root to perform mount/unmount operations
 
-## Installing the Helper Daemon
+## Helper Daemon
 
 The helper daemon must be installed and running for mounts to work. It runs as root via launchd and communicates with the menu bar app over XPC.
 
 The app **automatically installs** (or updates) the helper on launch — it prompts for your administrator password via the standard macOS authorization dialog. No manual steps needed.
-
-For manual installation (e.g. headless setups):
-
-```sh
-sudo make install-helper
-```
 
 To uninstall:
 
@@ -102,6 +103,19 @@ The popover shows:
 - Automatic recovery: missing mounts are remounted; stale or unreachable mounts are force-unmounted then remounted
 - After sleep/wake (3s delay) or network reconnection (2s delay), an immediate health check runs
 - Spotlight indexing is blocked on each mount via `.metadata_never_index` and `mdutil -i off`
+
+## Releasing
+
+1. Update the version in `VERSION`
+2. Build the release zip (automatically tags and updates the Cask formula):
+   ```sh
+   make release
+   ```
+3. Commit, push, and upload the zip to GitHub Releases:
+   ```sh
+   git push --tags
+   ```
+4. Create a GitHub Release for the tag and upload `.build/release/MacNAS-<version>.zip`
 
 ## Architecture
 

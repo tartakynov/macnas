@@ -23,7 +23,7 @@ enum HelperInstaller {
         }
 
         if !needsInstall() {
-            logger.info("Helper daemon is up to date (build \(BuildInfo.gitSHA.prefix(7), privacy: .public))")
+            logger.info("Helper daemon is up to date (v\(BuildInfo.version, privacy: .public))")
             return
         }
 
@@ -42,11 +42,11 @@ enum HelperInstaller {
             return true
         }
 
-        // Compare the git SHA baked into this build against the stamp written after last install.
+        // Compare the version baked into this build against the stamp written after last install.
         guard let stampData = fm.contents(atPath: stampPath),
               let stamp = String(data: stampData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
-              stamp == BuildInfo.gitSHA else {
-            logger.notice("Installed helper build differs from app build \(BuildInfo.gitSHA.prefix(7), privacy: .public) — update needed")
+              stamp == BuildInfo.version else {
+            logger.notice("Installed helper version differs from app v\(BuildInfo.version, privacy: .public) — update needed")
             return true
         }
 
@@ -54,7 +54,7 @@ enum HelperInstaller {
     }
 
     private static func writeStamp() {
-        try? BuildInfo.gitSHA.write(toFile: stampPath, atomically: true, encoding: .utf8)
+        try? BuildInfo.version.write(toFile: stampPath, atomically: true, encoding: .utf8)
     }
 
     private static func install(bundledHelper: String, bundledPlist: String, bundledEntitlements: String) {
@@ -102,7 +102,7 @@ enum HelperInstaller {
                 logger.error("Helper installation failed: \(message, privacy: .public)")
             }
         } else {
-            logger.notice("Helper daemon installed successfully (build \(BuildInfo.gitSHA.prefix(7), privacy: .public))")
+            logger.notice("Helper daemon installed successfully (v\(BuildInfo.version, privacy: .public))")
             writeStamp()
         }
     }
