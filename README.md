@@ -4,9 +4,15 @@ A macOS menu bar app that keeps NFS mounts to your NAS alive.
 
 NFS mounts on macOS break constantly — after sleep/wake, network blips, or server restarts — leaving you with stale file handles, hanging Finder windows, and no way to recover without manual intervention. macOS provides no built-in tool to manage or monitor NFS mounts.
 
-MacNAS fixes this. It mounts your NFS shares, monitors their health, and automatically recovers from failures. It blocks Spotlight indexing on NFS volumes to prevent mount thrashing. When something goes wrong that it can't fix, it tells you why.
+MacNAS fixes this. It mounts your NFS shares, monitors their health, and automatically recovers from failures. It blocks Spotlight indexing on NFS volumes to prevent mount thrashing. It tells you when something goes wrong that it can't fix.
 
 NFSv3 only. Requires macOS 14.0+ (Sonoma).
+
+<p align="center">
+  <img src="assets/menu.png" width="320" alt="Menu bar dropdown">
+  &nbsp;&nbsp;
+  <img src="assets/settings.png" width="280" alt="Settings window">
+</p>
 
 ## Install
 
@@ -54,7 +60,7 @@ To verify the helper was fully removed:
 
 ```sh
 sudo launchctl print system/com.macnas.helper  # should say "Could not find service"
-ls /usr/local/bin/com.macnas.helper             # should say "No such file or directory"
+ls /usr/local/bin/com.macnas.helper            # should say "No such file or directory"
 ```
 
 To remove configuration data:
