@@ -4,7 +4,6 @@ import Shared
 /// Main menu content showing mount status and actions.
 struct MountListView: View {
     @ObservedObject var appState: AppState
-    var onRemount: (MountDefinition) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -98,18 +97,6 @@ struct MountListView: View {
 
                 Spacer()
 
-                if status != .mounted && status != .unknown {
-                    Button {
-                        onRemount(mount)
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
-                            .font(.caption)
-                            .padding(4)
-                            .contentShape(Circle())
-                    }
-                    .buttonStyle(IconHoverButtonStyle())
-                }
-
                 Image(systemName: status.systemImage)
                     .foregroundStyle(status.color)
 
@@ -123,21 +110,6 @@ struct MountListView: View {
         }
         .buttonStyle(MenuItemButtonStyle())
         .disabled(status != .mounted)
-    }
-}
-
-private struct IconHoverButtonStyle: ButtonStyle {
-    @State private var isHovered = false
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundStyle(isHovered ? .primary : .secondary)
-            .background(
-                Circle().fill(isHovered ? Color.primary.opacity(0.1) : Color.clear)
-            )
-            .onHover { hovering in
-                isHovered = hovering
-            }
     }
 }
 

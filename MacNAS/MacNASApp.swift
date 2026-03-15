@@ -15,10 +15,7 @@ struct MacNASApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            MountListView(
-                appState: appState,
-                onRemount: { mount in serviceManager.healthPoller?.remount(mount) }
-            )
+            MountListView(appState: appState)
             .task {
                 if !serviceManager.started {
                     serviceManager.start(appState: appState)

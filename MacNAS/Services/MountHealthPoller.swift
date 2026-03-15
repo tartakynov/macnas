@@ -42,16 +42,6 @@ final class MountHealthPoller {
         }
     }
 
-    /// Remount a single unhealthy mount.
-    func remount(_ mount: MountDefinition) {
-        Task {
-            guard !checking else { return }
-            checking = true
-            defer { checking = false }
-            await recoverMount(mount, forceUnmount: true)
-        }
-    }
-
     // MARK: - Private
 
     /// Force-unmount (if requested) then remount a single mount, updating status.
