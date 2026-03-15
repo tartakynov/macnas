@@ -8,7 +8,6 @@ final class AppState: ObservableObject {
     @Published var config: MacNASConfig
     @Published var mountStatuses: [UUID: MountStatus] = [:]
     @Published var hasNetwork: Bool = true
-    @Published var lastCheckTime: Date?
 
     init() {
         self.config = MacNASConfig.load()
@@ -30,7 +29,6 @@ final class AppState: ObservableObject {
                 mountStatuses[mount.id] = MountStatus(from: report.status, message: report.message)
             }
         }
-        lastCheckTime = Date()
     }
 
     /// Mark all mounts with no-network status.

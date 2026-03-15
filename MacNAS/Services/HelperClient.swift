@@ -79,19 +79,4 @@ final class HelperClient {
             }
         }
     }
-
-    /// Force recovery: unmount all + remount.
-    func forceRecovery(mounts: [MountDefinition]) async -> [MountHealthReport] {
-        guard let proxy = getProxy(),
-              let data = try? encoder.encode(mounts) else {
-            return []
-        }
-
-        return await withCheckedContinuation { continuation in
-            proxy.forceRecovery(mountsData: data) { reportData in
-                let reports = (try? self.decoder.decode([MountHealthReport].self, from: reportData)) ?? []
-                continuation.resume(returning: reports)
-            }
-        }
-    }
 }

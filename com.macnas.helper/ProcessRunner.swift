@@ -53,9 +53,4 @@ enum ProcessRunner {
             timedOut: false
         )
     }
-
-    /// Run a command via /bin/sh (for shell features like globbing, pipes, etc.).
-    static func shell(_ command: String, timeout: TimeInterval? = nil) -> ProcessResult {
-        run("/bin/sh", args: ["-c", command], timeout: timeout)
-    }
 }
