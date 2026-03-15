@@ -1,0 +1,5 @@
+.DS_Store
+.build/
+.claude/
+MacNAS/BuildInfo.swift
+problem.md
